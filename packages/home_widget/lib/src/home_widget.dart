@@ -53,20 +53,26 @@ class HomeWidget {
   ///
   /// Android Widgets will look for [qualifiedAndroidName] then [androidName] and then for [name]
   /// iOS Widgets will look for [iOSName] and then for [name]
+  /// HarmonyOS Widgets will look for [ohosName] and then for [name]
   ///
   /// [qualifiedAndroidName] will use the name as is to find the WidgetProvider
   /// [androidName] must match the classname of the WidgetProvider, prefixed by the package name
   /// The name of the iOS Widget must match the kind specified when creating the Widget
+  /// The name of the OHOS Widget must match the `getWidgetName()` returned by your
+  /// `HomeWidgetFormExtensionAbility` (or the `form name` declared in `module.json5`
+  /// when the base class default is used).
   static Future<bool?> updateWidget({
     String? name,
     String? androidName,
     String? iOSName,
     String? qualifiedAndroidName,
+    String? ohosName,
   }) {
     return _channel.invokeMethod('updateWidget', {
       'name': name,
       'android': androidName,
       'ios': iOSName,
+      'ohos': ohosName,
       'qualifiedAndroidName': qualifiedAndroidName,
     });
   }
@@ -85,17 +91,31 @@ class HomeWidget {
   ///
   /// [qualifiedAndroidName] will use the name as is to find the WidgetProvider.
   /// [androidName] must match the classname of the WidgetProvider, prefixed by the package name.
+  ///
+  /// HarmonyOS（OHOS，API version 18+）通过 `formProvider.openFormManager` 拉起系统卡片管理页让用户加桌：
+  /// - [ohosAbilityName]：卡片对应的 `FormExtensionAbility` 名（必填，否则插件返回错误）
+  /// - [ohosFormName]：`form_config.json` 中声明的 form name（必填）
+  /// - [ohosModuleName]：HAP 模块名（可选，默认 `entry`）
+  /// - [ohosDimension]：卡片尺寸枚举（可选，默认 2，含义见 HarmonyOS Form Kit 文档）
   static Future<void> requestPinWidget({
     String? name,
     String? androidName,
     // String? iOSName,
     String? qualifiedAndroidName,
+    String? ohosAbilityName,
+    String? ohosFormName,
+    String? ohosModuleName,
+    int? ohosDimension,
   }) {
     return _channel.invokeMethod('requestPinWidget', {
       'name': name,
       'android': androidName,
       // 'ios': iOSName,
       'qualifiedAndroidName': qualifiedAndroidName,
+      'ohosAbilityName': ohosAbilityName,
+      'ohosFormName': ohosFormName,
+      'ohosModuleName': ohosModuleName,
+      'ohosDimension': ohosDimension,
     });
   }
 

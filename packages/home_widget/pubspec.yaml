@@ -1,5 +1,5 @@
 name: home_widget
-description: A plugin to provide a common interface for creating HomeScreen Widgets for Android and iOS.
+description: A plugin to provide a common interface for creating HomeScreen Widgets for Android, iOS and HarmonyOS (OpenHarmony).
 version: 0.9.1
 repository: https://github.com/ABausG/home_widget
 funding:
@@ -9,6 +9,7 @@ topics:
   - native
   - android
   - ios
+  - ohos
 screenshots:
   - description: 'iOS Counter HomeScreen Widget'
     path: pub/screenshots/ios-counter.gif
@@ -44,4 +45,7 @@ flutter:
         package: es.antonborri.home_widget
         pluginClass: HomeWidgetPlugin
       ios:
+        pluginClass: HomeWidgetPlugin
+      ohos:
+        package: home_widget
         pluginClass: HomeWidgetPlugin

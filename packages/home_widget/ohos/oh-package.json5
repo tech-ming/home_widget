@@ -1,0 +1,9 @@
+{
+  "name": "home_widget",
+  "version": "1.0.0",
+  "description": "A plugin to provide a common interface for creating HomeScreen Widgets on HarmonyOS.",
+  "main": "index.ets",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {}
+}
