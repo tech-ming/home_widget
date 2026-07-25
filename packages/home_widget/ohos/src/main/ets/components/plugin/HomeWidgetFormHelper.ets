@@ -91,9 +91,20 @@ export class HomeWidgetFormHelper {
   /**
    * 查询某个 widgetName 当前所有已添加到桌面的 formId。
    *
-   * 由 `HomeWidgetPlugin.updateWidget` 调用。
+   * 由 `HomeWidgetPlugin.updateWidget` 与应用侧「按类型批量刷新」调用。
+   *
+   * **跨进程缓存（重要）**：formId 索引由 FormExtensionAbility 进程在
+   * `onAddForm` / `onRemoveForm` 写入，而本方法通常在 UIAbility 进程被调用，
+   * preferences 缓存每进程独立。若不先丢弃缓存，UIAbility 进程会读到陈旧索引
+   * （漏掉对端后来添加的实例），表现为「同一数据的多个卡片只刷新到早先缓存的那部分」。
+   * 因此读取前必须 `removePreferencesFromCacheSync` 强制从磁盘重载
+   * （与 `HomeWidgetPlugin.getWidgetData` 的清缓存策略对齐）。
    */
   static getFormIds(context: common.Context, widgetName: string): string[] {
+    preferences.removePreferencesFromCacheSync(
+      context,
+      { name: HomeWidgetConstants.INTERNAL_PREFERENCES_NAME },
+    );
     const prefs = preferences.getPreferencesSync(
       context,
       { name: HomeWidgetConstants.INTERNAL_PREFERENCES_NAME },

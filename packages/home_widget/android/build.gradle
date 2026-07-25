@@ -51,7 +51,10 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "androidx.glance:glance-appwidget:1.+"
-    implementation "androidx.work:work-runtime-ktx:2.+"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.+"
+    // 固定版本号：原插件使用 `1.+` / `2.+` 动态版本会触发 maven-metadata.xml 拉取，
+    // 在国内镜像（flutter-io.cn 等）偶发 502 时会直接失败；固定版本走 .pom + .aar
+    // 的直链路径，构建可复现且不依赖元数据接口。
+    implementation "androidx.glance:glance-appwidget:1.1.1"
+    implementation "androidx.work:work-runtime-ktx:2.9.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1"
 }
